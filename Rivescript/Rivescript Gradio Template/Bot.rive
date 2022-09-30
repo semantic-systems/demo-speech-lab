@@ -1,0 +1,12 @@
+! version = 2.0
+
+! sub hello = hi
+
++ hi bot
+- Hello, human!
+
++ hi *
+- Who are you calling <star>?
+
++ *
+- Catchall Response
