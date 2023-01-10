@@ -1,0 +1,30 @@
+! version = 2.0
+
+! sub hello = hi
+
++ hi bot
+- Hello, human!
+
++ hi *
+- Who are you calling <star>?
+
+//+ [*] # [*]
+//- <star1> <star2> <star3> | <set age=<star1>> <get age>
+
++ [*] # [*]
+- <star1><set age = <star1>> Bist du wirklich <get age> Jahre alt?
+
++ [*] bitcoin [*]
+- BTC PRICE: <call>bitcoin</call>
+
+> object bitcoin python
+	
+	import requests as rq
+	
+	rsp = rq.get("https://api.coingecko.com/api/v3/simple/price/?ids=bitcoin&vs_currencies=eur")
+	rsp_json = rsp.json()
+	
+	btc_price = rsp_json['bitcoin']['eur']
+	return btc_price
+	
+< object

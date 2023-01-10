@@ -1,0 +1,102 @@
+// Define golbal variables
+!array ja=ja yo jo genau korrekt richtig yes klar jep jup
+!array nein=nein ne no
+!array eyecolors=rot blau pink neongelb
+!array hello=hi hallo hey was geht
+
+// Set bot name
+!var botname=Nott
+
+// Initial question/reaction
++ [*]
+- Wie wäre es mit einer Begrüßung?!
+
++ [*] @hello [*]
+- <set score=0>Herzlich Willkommen in der JVA Askaban!\nIch bin <bot botname> und werde dich heute befragen um dich einem userer Straflager zuteilen zu können.\nWie heißt du denn? {topic=get_name}
+
+// Get name from user
+> topic get_name
+// 'ß' gets ignored: heiße -> heie
++ [ich heie|ich bin|mein name ist|man nennt mich] *
+- <set name=<star1>>Sicher, dass du <get name> heißt? {topic=confirm_name}
+< topic
+
+// Confirm name input
+> topic confirm_name includes help
++ [*] @ja [*]
+- Das tut mir leid...\nWie lange atmest du denn schon den anderen den Sauerstoff weg? {topic=get_age}
+
++ [*] @nein [*]
+- Na dann sag mir endlich deinen Namen! <add score=1> {topic=get_name}
+
++ *
+- Und? Heißt du nun <get name> oder nicht?!
+< topic
+
+// Get age from user
+> topic get_age
++ [*] # [*] {weight=2}
+* <set age=<star1>> <get age> > 100 => Das glaub ich dir nicht! Sag mir dein richtiges Alter!
+* <set age=<star1>> <get age> < 100 => Bist du wirklich <get age> Jahre alt? {topic=confirm_age}
+
++ *
+- Dein Alter sollte nur eine Zahl sein...
+< topic
+
+// Confirm age input
+> topic confirm_age includes help
++ [*] @ja [*]
+* <get age> >= 16 => Dann bist du hier genau richtig! <add score=2>\nEin wichtiges Kriterium ist die Augenfarbe.\nWelche Farbe haben deine Augen? {topic=get_eyecolor}
+* <get age> < 16 => Eigentlich bist du zu jung. Naja egal, hier kommt niemand mehr raus!\nEin wichtiges Kriterium ist die Augenfarbe.\nWelche Farbe haben deine Augen? {topic=get_eyecolor}
+
++ [*] @nein [*]
+- Bist du zu doof, mir eine einfache Zahl mitzuteilen?! <add score=1> {topic=get_age}
+< topic
+
+
+// Get eyecolor from user
+> topic get_eyecolor
++ [*] (@eyecolors) [*]
+- Okay... Das ist bemitleidenswert!\nNaja egal. Sag mir jetzt noch, wie groß du bist. {topic=get_size}
+
++ [*]
+- Diese Farbe kenne ich nicht! Ich kenne nur rot, blau, pink und neongelb. <add score=1>
+< topic
+
+// Get size from user
+> topic get_size
++ #
+- <set size=<star1>> Bist du sicher, dass du <get size> Millimeter groß bist? {topic=confirm_size}
+
++ [*]
+- Sag mir eine Zahl!
+< topic
+
+// Confirm size input
+> topic confirm_size includes help
++ [*] @ja [*]
+- Das ist schon klein... {topic=classification}
+
++ [*] @nein [*]
+- Bist du zu doof, mir eine einfache Zahl mitzuteilen?! <add score=1> {topic=get_size}
+< topic
+
+// Classify the user based on the earned points
+> topic classification
++ *
+* <get score> <= 2 => Versuch jetzt nicht, mich zu beeinflussen! Mein Urteil steht fest.\nDu hast hier nichts verloren! Sieh zu, dass du nach Hause kommst! {topic=end}
+* <get score> <= 4 => Versuch jetzt nicht, mich zu beeinflussen! Mein Urteil steht fest.\nDu kommst zu den psychisch gestörten Kleinkriminellen und Rehabilitierten! {topic=end}
+* <get score> > 4 => Versuch jetzt nicht, mich zu beeinflussen! Mein Urteil steht fest.\nDu kommst in Einzelhaft! {topic=end}
+< topic
+
+// Infinit catch-all topic
+> topic end includes help
++ [*]
+- Wir sind hier fertig! Tret mir aus den Augen!
+< topic
+
+// Jumps back to the start
+> topic help
++ [*] (help|hilfe|sos) [*]
+- Kein Problem, fangen wir von vorne an. {topic=random}
+< topic

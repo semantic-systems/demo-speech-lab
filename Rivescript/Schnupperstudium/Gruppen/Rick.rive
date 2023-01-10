@@ -1,0 +1,92 @@
+//Arrays
+! array begruessungen = hallo|hey|guten tag|moin|servus|tach|hi
+! array vorstellungen = ich heisse|mein name ist|mein name lautet|ich bin
+! array verabschiedungen = tschuess|tschau|auf wiedersehen|gute nacht|bye|bye bye|bis nachher
+//Arrays - Lieblingsthemen start
+! array umwelt = umwelt|klimawandel|natur|plastik|pflanze|pflanzen|wald|fluss|park|grünen
+! array haustiere = tiere|haustiere|hund|katze|hamster|katzen
+
+
+//sub
+
+//starter konvi
++ @begruessungen
+-{formal}(@begruessungen){/formal} \n
+^ Wie heisst du?
+
+
++ [@vorstellungen] *
+% (@begruessungen) wie heisst du
+- <set username=<formal>> Schön dich kennenzulernen, <get username>. Ich bin B0TR1CK. \n
+^ Erzähl mir doch gerne etwas. Ich persönlich interessiere mich sehr für Tiere und die Umwelt.
+
++ [*] @verabschiedungen [*]
+- (@verabschiedungen)
+
+// falls keine Antwort vorhanden
++ *
+- Darüber weiss ich leider nicht so viel. Vielleicht hilft dir dieses Video weiter: https://bit.ly/3SbDceT
+
+//Abfragen
+
++ wie heisse ich
+* <get username>==undefined=>Woher soll ich das wissen. Dumm?
+- guck in dein perso, <get username>! >:(
+
+
++ was fuer ein haustier habe ich
+* <get haustier> == undefined => Du hast kein Haustier du Opfer!
+- du hast <get haustier> //einz muss ausgteauscht werden. vlt personalpronomen speichern
+* <get haustier>==undefined=>Du hast es mir leider noch nicht gesagt.
+
+
+
+//themengebiete
++ [*] @umwelt [*]
+//Gute frage
+- Mir liegt die Natur wirklich sehr am Herzen. Deshalb versuche ich so viel Zeit wie moeglich draussen zu verbringen. Du auch? {topic=umwelt}
+
++ [*] @haustiere [*]
+- Hast du ein Haustier? {topic=haustier}
+
+> topic umwelt
+
+    + (ja|nein)
+    % mir liegt die natur wirklich sehr am herzen deshalb versuche ich so viel zeit wie moeglich draussen zu verbringen du auch
+    * <star1> == ja => Das kann ich gut verstehen. \n
+    ^ Na gut, ich muss jetzt los. Ich will noch eine Radtour machen. {topic=random}
+    * <star1> == nein => Warum denn nicht die Natur ist doch wunderschoen guck Dir doch mal diese Bilder von suessen Tieren an: https://bit.ly/3SbDceT{topic=random}
+
+    //falls keine Antwort:
+    + *
+    - Bitte bleibe beim Thema !
+    - Ich moechte ungern meine Frage wiederholen.
+    - Kostenlose Bitcoins https://bit.ly/3SbDceT
+
+< topic
+
+
+> topic haustier
+
+// eigentlich wollten wir das mit ner wildcard machen aber ja rivescript...
++ (ja|nein)
+% hast du ein haustier
+* <star1> == ja => Was fuer eins?
+* <star1> == nein => Wie schade :c {topic=random}
+
+
++ [ich habe][ein|eine|einige|einen] * 
+% was fuer eins
+- <set haustier=<formal>> Das ist wundervoll :D Wie alt ist den dein <get haustier>?
+
++ [*] # [*]{weight=10}
+* <star1> < 5 => Das ist aber noch recht jung. {topic=random} \n
+^ Wo gehst du eigentlich mit deinem <get haustier> spazieren?
+* <star1> > 5 => Wie schade :c {topic=random} \n
+^ Wo gehst du eigentlich mit deinem <get haustier> spazieren?
+ 
+ 
++ *
+- Hmm keine Ahnung was du meinst hier ein Link zu einem Katzenvideo:https://bit.ly/3yQDhO5
+ 
+< topic

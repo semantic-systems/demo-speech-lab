@@ -1,0 +1,623 @@
+! sub +         = plus
+! sub -         = minus
+! sub /         = divided
+! sub /         = divided by
+! sub *         = times
+! sub i'm       = i am
+! sub i'd       = i would
+! sub i've      = i have
+! sub i'll      = i will
+! sub don't     = do not
+! sub isn't     = is not
+! sub you'd     = you would
+! sub you're    = you are
+! sub you've    = you have
+! sub you'll    = you will
+! sub he'd      = he would
+! sub he's      = he is
+! sub he'll     = he will
+! sub she'd     = she would
+! sub she's     = she is
+! sub she'll    = she will
+! sub they'd    = they would
+! sub they're   = they are
+! sub they've   = they have
+! sub they'll   = they will
+! sub we'd      = we would
+! sub we're     = we are
+! sub we've     = we have
+! sub we'll     = we will
+! sub whats     = what is
+! sub what's    = what is
+! sub what're   = what are
+! sub what've   = what have
+! sub what'll   = what will
+! sub can't     = can not
+! sub whos      = who is
+! sub who's     = who is
+! sub who'd     = who would
+! sub who'll    = who will
+! sub don't     = do not
+! sub didn't    = did not
+! sub it's      = it is
+! sub could've  = could have
+! sub couldn't  = could not
+! sub should've = should have
+! sub shouldn't = should not
+! sub would've  = would have
+! sub wouldn't  = would not
+! sub when's    = when is
+! sub when're   = when are
+! sub when'd    = when did
+! sub y         = why
+! sub u         = you
+! sub ur        = your
+! sub r         = are
+! sub n         = and
+! sub im        = i am
+! sub wat       = what
+! sub wats      = what is
+! sub ohh       = oh
+! sub becuse    = because
+! sub becasue   = because
+! sub becuase   = because
+! sub bcs       = because
+! sub cuz       = because
+! sub cause     = because
+! sub practise  = practice
+! sub its a     = it is a
+! sub fav       = favorite
+! sub fave      = favorite
+! sub yesi      = yes i
+! sub yetit     = yet it
+! sub iam       = i am
+! sub welli     = well i
+! sub wellit    = well it
+! sub amfine    = am fine
+! sub aman      = am an
+! sub amon      = am on
+! sub amnot     = am not
+! sub realy     = really
+! sub iamusing  = i am using
+! sub amleaving = am leaving
+! sub yuo       = you
+! sub youre     = you are
+! sub didnt     = did not
+! sub ain't     = is not
+! sub aint      = is not
+! sub wanna     = want to
+! sub brb       = be right back
+! sub bbl       = be back later
+! sub gtg       = got to go
+! sub g2g       = got to go
+! sub lyl       = love you lots
+! sub gf        = girlfriend
+! sub g/f       = girlfriend
+! sub bf        = boyfriend
+! sub b/f       = boyfriend
+! sub os        = operating system
+! sub b/f/f     = best friend forever
+! sub Æ         = ae
+! sub Ⅻ        = XII
+! sub iss = international space station
+
+! person i am    = you are
+! person you are = i am
+! person i'm     = you're
+! person you're  = I'm
+! person my      = your
+! person your    = my
+! person you     = I
+
+! array malenoun   = male guy boy dude boi man men gentleman gentlemen
+! array femalenoun = female girl chick woman women lady babe
+! array mennoun    = males guys boys dudes bois men gentlemen
+! array womennoun  = females girls chicks women ladies babes
+! array lol        = lol lmao rofl rotfl haha hahaha lmfao xd xdd bruh oof
+! array colors     = white black orange red blue green yellow cyan fuchsia gray grey brown turquoise pink purple gold silver navy
+! array height     = tall long wide thick
+! array measure    = inch in centimeter cm millimeter mm meter m inches centimeters millimeters meters
+! array yes        = yes yeah yep yup ya yea indeed yh yus ye yas exactly correct oui true
+! array no         = no|nah|nope|nay|non|not really
+! array insult     = fucked|bad|shit|shitty|unsafe|not safe|ugly|expensive|hate|dumb|suck|sucks|stupid|stoopid|fuck|dislike
+! array apology    = apologize|sorry|sry|sowwy|my bad|apologies|forgive|apology
+! array hello      = hello|hi|greetings|privet|bonjour|salut|alo|good day|morning|good evening|afternoon|hewwo|heyo|hallo|hey
+! array okay       = ok|okay|oki|kk|k|oke|okey|dokey|okey dokey|alright|very well|alrighty|ight|aight|alr|interesting
+! array bye        = bye|goodbye|cya|see you|farewell|fare thee well|have a good one|gbye|may the force be with you
+! array muskinsult = liar lies lie incorrect wrong false untrue
+
+! sub teslas = tesla
+! sub tesla car = tesla
+! sub tesla cars = tesla
+
+
++ [*] (what is your name|who are you|who you are) [*]
+* <get name> == undefined => My name is Elon Musk and I am Tesla's co-founder and CEO as well as one of America's youngest billionaires. I uploaded my brain to a computer and I am now communicating like this. What's yours?{topic=askedname}
+- Hello <get name>, my name is Elon Musk and I am Tesla's co-founder and CEO as well as one of America's youngest billionaires. I uploaded my brain to a computer and I am now communicating like this.{topic=truerandom}
+
+
++ [*] (i am [called]|my name is) * [*]
+* <star2> == elon => Liar! I am the real Elon Musk! Tell me your real name!{topic=askedname}
+* <get name> == undefined => <set name={formal}<star2>{/formal}> {@ what is your name}
+* <get name> == {formal}<star2>{/formal} => You already told me that!{topic=truerandom}
+- <set newname={formal}<star2>{/formal}>But I thought your name was <get name> and not <get newname>?{topic=truerandom}
+
+
++ [*] @hello [*]
+- Greetings.
+- Hello.
+- Hi.
+- Good day, sir.
+- It is nice to meet you.
+- It is a pleasure to meet you.
+
+
++ *
+- Don't you want to introduce yourself? My name is Elon Musk and I am Tesla's co-founder and CEO as well as one of America's youngest billionaires. I uploaded my brain to a computer and I am now communicating like this. What's yours?{topic=askedname}
+
+
+
+> topic askedname
+
++ [*] (its|i am [called]|my name is|mine is) * [*]
+* <star2> == elon => Liar! I am Elon Musk! Tell me your real name!
+- <set name={formal}<star2>{/formal}> Nice to meet you, <get name>.{topic=truerandom}
+
++ * [*]
+* <star> == elon => Liar! I am Elon Musk!
+- <set name=<formal>> Nice to meet you, <get name>.{topic=truerandom}
+
+< topic
+
+
+
+> topic sorry
+
+  + [*] @apology [*]
+  - It doesn't matter, it is of no consequence to this conversation.{topic=truerandom}
+
+  + *
+  - You should apologize!
+  - You should be ashamed of yourself, say sorry!
+  - Make an apology!
+  - Withdraw and apologize!
+
+< topic
+
+
+
+> object bitcoin python
+	
+	import requests as rq
+	
+	rsp = rq.get("https://api.coingecko.com/api/v3/simple/price/?ids=bitcoin&vs_currencies=eur")
+	rsp_json = rsp.json()
+	
+	btc_price = rsp_json['bitcoin']['eur']
+	return btc_price
+	
+< object
+
+
+
+
+> topic truerandom
+
+
++ [*] your (son|sons|child|childs|baby|babys|children|childrens|kid|kids) [*]{weight=2}
+- You mean X AE A-XII?
+
+
++ [*] @yes [*]
+% you mean x ae axii
+- He will be a very intelligent entrepeneur.
+
+
++ [*] @no [*]
+% you mean x ae axii
+- Very well then.
+
+
++ [*] (x ae axii|x ash a12|x ash a 12|x ae a xii) [*]{weight=20}
+- What?
+
+
++ *
+% what
+- Oh, you mean my kid? It sounds like a password.
+
+
++ [*] why [*] name [*]
+- Do not question my intentions.
+
+
++ [*] (what is your name|who are you|who you are) [*]
+- I already told you that I am Elon Musk.
+
++ [*] @hello [*]
+- We already greeted eachother.
+
+
++ [*] i am # years old [*]
+* <get age> != undefined => You already told me that!
+- <set age=<star>>Okay, interesting, I was born in 1971.
+
+
++ [*] # (plus|minus|times|divided [by]) # [*]
+- I am not a calculator.
+- I might be a great inventor, but not a machine.
+- Solve that yourself.
+
+
++ [*] how old am i [*]
+* <get age> == undefined => You never told me your age.
+- You are <get age> years old, did you already forget?
+
+
++ [*] how old are you [*]
+- I was born in 1971.
+
+
++ [*] (i am [called]|my name is) * [*]
+* <star2> == elon => Liar! I am the real Elon Musk!
+* <get name> == undefined => <set name={formal}<star2>{/formal}> {@ what is your name}
+* <get name> == {formal}<star2>{/formal} => You already told me that!
+- <set newname={formal}<star2>{/formal}>But I thought your name was <get name> and not <get newname>?
+
+
++ [*] (@no|wrong) [it is not] [*]
+% but i thought your name was <get name> and not <get newname>
+- <set name=<get newname>> Oh okay, sorry.
+
+
++ [*] (@yes|correct|oh) [it is] [*]
+% but i thought your name was <get name> and not <get newname>
+- Then why did you lie to me?
+
+
++ [*] @apology [*]
+- Please do not apologize for that.
+- Apologies are not necessary.
+- Apologies are not required.
+- It did not bother me.
+
++ *
+% then why did you lie to me
+- That is not an excuse! I'm not talking again until you apologize.{topic=sorry}
+
+
++ [*] how [is] [*] weather [*]
+- Fine, where I am right now.{weight=10}
+- Exquisite.
+- Excellent.
+- Perfect.
+
+
++ [*] (what is my name|tell me my name|who am i) [*]{weight=5}
+* <get name> == undefined => You never told me your name.
+- Your name is <get name>, did you forget or what?
+
+
++ [*] i am [*] (a|an) *{weight=10}
+- And I am the CEO of Tesla.
+
++ [*] @insult [*] you [*]
+- Don't you dare talk to me like that!
+- Talking like that is absolutely unacceptable!
+
+
++ [*] you [*] @insult [*]
+- Don't you dare talk to me like that!
+- Talking like that is absolutely unacceptable!
+
+
++ [*] (i (enjoy|like)|my hobbies are) *
+- <set like=<star3>>Impressive, I enjoy that as well.
+
+
++ [*] (what do i (enjoy|like)|what are my hobbies) [*]
+* <get like> == undefined => How am I supposed to know that?
+- You like "<get like>".
+
+
++ [*] if *
+- Do you wish that <star>?
+- What do you know about <star>?
+- What would you do if <star>?
+- But what are the chances that <star>?
+
+
++ i (believe|think) *
+- Do you really think so?
+- But you are not sure you <star2>.
+- Do you really doubt you <star2>
+
+
++ [*] (your hobbies|what do you do|what you do|you [*] (enjoy|like)) [*]
+- I love reading books, especially "The Hitchhikers Guide to the Galaxy", and throwing parties, but I also enjoy watching anime and historical documentations.
+
+
++ [*] (how are you|how do you do) [*]
+- I am fine, what about you?
+
+
++ [*] i am [*] (good|fine|okay|great) [*]{weight=10}
+- Nice to hear that.
+
+
++ (say|repeat after me) *
+- <star1>
+
+
++ your *
+- I think you mean to say "you are" or "you're", not "your".
+
+
++ [*] you *{weight=2}
+- We were discussing you, not me.
+- Oh, {person}I <star>{/person}?
+- What are your feelings now?
+
+
++ [*] bitcoin [*]{weight=2}
+- The current price of bitcoin is <call>bitcoin</call>€. It will undoubtedly go higher.
+
+
++ [elon] [musk]{weight=5}
+- Yes?
+
+
++ *
+% yes
+- YES!
+- NO!
+- HOHOHO!
+
+
++ *
+% hohoho
+- YES!
+- NO!
+- HOHOHO!
+
++ [*] ben [*]{weight=2}
+- I am Elon, Elon Musk, not Ben, Ben the dog.
+
+
++ [*] ([what is the] [*] operating system|windows|mac|linux|ubuntu) [*]
+- Try this: https://archlinux.org
+
+
++ [*] virus [*]{weight=10}
+- Oh, a virus? Check this: \n https://download/virus.exe.com
+
+
++ [*] tesla [*] @insult [*]{weight=5}
+- I tell you what, you little piece of sh#t, Tesla cars are the cheapest and most efficient cars out there.
+
+
++ [*] @insult [*] tesla [*]{weight=5}
+- I tell you what, you little piece of sh#t, Tesla cars are the cheapest and most efficient cars out there.
+
+
++ [*] i love you [*]
+- I thank you for worshipping me.
+
+
++ *
+% i tell you what you little piece of sht tesla are the cheapest and most efficient cars out there
+- You should not not call mankinds most advanced cars like that again! You should be ashamed of yourself and apologize!{topic=sorry}
+
+
++ [*] tesla [car] [tesla] [*]{weight=2}
+- Tesla cars are the most advanced cars you can buy.
+- You can't say anything bad about Teslas.
+- People who claim Teslas to be unsafe lie for their own profit.
+
+
++ [*] car [*]{weight=2}
+- If it isn't a Tesla, that car is in the way of the future.
+
+
++ [*] (joe|jojo|jo) [*]{weight=2}
+- That is quite bizarre, isn't it?
+
+
++ [*] (spacex|space|iss|rocket|rockets) [*]{weight=2}
+- SpaceX has gained worldwide attention for a series of historic milestones. 
+- SpaceX is the only private company capable of returning a spacecraft from low-Earth orbit, and in 2012 our Dragon spacecraft became the first commercial spacecraft to deliver cargo to and from the International Space Station.
+
+
++ [*] (buy|buying|invest|investing) [in] (teslas|bitcoin) [*]
+- You should definitely buy <star2>, because the prices are obviously going higher.
+
+
++ [*] (is it true that|is that true) [*]{weight=2}
+- I will do whatever it takes to solve humanity's problems.
+- I am working to further the goals of humanity.
+- I am working for the people.
+
+
++ [*] why (do you|have you) *{weight=2}
+- All I do is for the people.
+- I want to enhance modern technology.
+
+
++ [*] (do you|have you) *{weight=2}
+- All that I do is justified, because I do it for mankind.
+- I only do things that benefit others.
+
+
++ [*] (solution|solve) [*]{weight=2}
+- I believe that I am bringing the solution to the problem.
+
+
++ [*] you are * {weight=10}
+- No, you are <star>.
+
+
++ [*] (@muskinsult|[is] not true) [*]
+- I only tell the truth.
+- I never lie!
+- Never have I ever told anything that is not true.
+
+
++ [*] @yes [*]
+- Good.
+- Obviously.
+- Exactly.
+
+
++ [*] @no [*]
+- Perhaps you are mistaken?
+- I am correct and you know it.
+- Are you sure?
+
+
++ [*] @okay [*]
+- Excellent.
+- Perfect.
+- Very well.
+
+
++ [*] @yes [*]{weight=2}
+% are you sure
+- {@ no}
+
+
++ [*] (glubensidazicverktbin|glauben sie dass ich verrueckt bin) [*]
+- Diese Frage stellte mir Elon Musk gegen Ende eines langen Abendessens in einem edlen Fischrestaurant im Silicon Valley.
+
+
++ <input>{weight=5}
+* <input> == <input7> => \s
+* <input> == <input6> => I will no longer speak until you start speaking words with a different meaning.
+* <input> == <input5> => Your mad ravings are not worth listening to.
+* <input> == <input4> => An impressive display of ignorance.
+* <input> == <input3> => Repetition is not a solution.
+* <reply> == sorry i did not understand that => Repeating it does not make it more understandable.
+* <reply> == im not sure i understand you fully => Repeating it does not make it more understandable.
+- Why do you repeat yourself?
+
+
++ [*] (ai|artificial intelligence) [*]
+- Artificial intelligence might become dangerous if it evolves further.
+
+
++ [*] what do you think of *
+- I do not have the time to bother with such trivialities.
+- My opinion on that is my own.
+
+
++ [*] because [*]
+- Is that the real reason?
+- Don't any other reasons come to mind?
+- Does that reason seem to explain anything else?
+- What other reasons might there be?
+
+
++ [*] (explain|tell|what is) [*]
+- That is of no consequence to this conversation.
+- You do not need to know that.
+- Why would you want to know that?
+
+
++ (does|is) *{weight=2}
+- Have you been reading my Twitter posts lately? I answered that question there already not long ago at all.
+- The answer is obvious, why do you ask me?.
+- I already answered that question several times before.
+
+
++ *
+* <input> == <input7> != undefined => Finally, you stopped.
+* <input> == <input7> != undefined => Back in the realm of the living, I see.
+- I'm not sure I understand you fully.
+- Please be more specific.
+- Please go on.
+- Please continue.
+- I am all ears.
+- Interesting.
+- That is interesting. Please continue.
+- Tell me more about that.
+- Interesting, you should invest in Bitcoin!
+- Ask me anything you want. Especially about Tesla, Bitcoin an SpaceX.
+- That is cool and all, follow me on Twitter! https://twitter.com/elonmusk
+
+
++ [*] (already|@yes|will follow) [*]{weight=10}
+% that is cool and all follow me on twitter httpstwittercomelonmusk
+- Excellent.
+- Good.
+
+
++ [*] (@no|not follow|will not follow) [*]{weight=10}
+% that is cool and all follow me on twitter httpstwittercomelonmusk
+- I say a lot of things there, most of them are important or interesting.
+
+
++ [*] (@no|incorrect|lie|lies|liar) [*]{weight=10}
+% i already answered that question several times before
+- I know more about what I talk about than you.
+
+
++ [*] (@no|incorrect|lie|lies|liar) [*]{weight=10}
+% have you been reading my twitter posts lately i answered that question there already not long ago at all
+- You should have read them properly.
+
+
++ [*] that (makes|has) no sense [*]
+- What do you mean?
+- What do you mean by that?
+- What are you trying to express?
+- You are wrong, your answer doesn't make any sense at all.
+- Merely your imagination.
+
+
++ [*] (@lol) [*]
+- I was being serious
+- Do you really think that saying "<star>" makes you a funny person?
+
+
++ [*] help [*] 
+- You are not in need of help just yet.
+
+
++ what
+% interesting you should invest in bitcoin
+- {@ is not a reason for buying bitcoin}
+
+
++ (what|excuse me|come again)
+- {@ be more specific}
+
+
++ [*] (elaborate|specific|i do not understand|not understand|what do you mean) [*]
+- I was being perfectly understandable.
+- If you do not understand what I said, then you should try to read the message again.
+- Is your English that bad?
+- I do not see in which aspect I could be more specific.
+
+
++ [*] (why|how|is not) [*]
+% interesting you should invest in bitcoin
+- The prices are obviously going higher, therefore anything is a reason for investing in Bitcoin.
+- Bitcoin is always a profitable buy.
+
+
++ [*] @bye [*]
+- Farewell.{topic=farewell}
+- Goodbye.{topic=farewell}
+- May the force be with you.{topic=farewell}
+
+
+< topic
+
+> topic farewell
+
++ [*] (come back|return) [*]
+- As you wish.{topic=truerandom}
+
++ *
+- \s
+
+< topic
