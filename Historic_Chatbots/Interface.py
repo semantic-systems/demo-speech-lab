@@ -1,59 +1,43 @@
-from google.cloud import speech_v1 as speech
-import requests as rq
-import gradio as gr
-import numpy as np
-import os
-import io
+#!/usr/bin/env python
 
+"""\
+This class contains the main functionality of the historic chatbots project.
+- setting up the bots
+- setting up the gradio UI
+- whisper speech-to-text model
+
+"""
+
+import whisper
+import gradio as gr
 from Chatbot import Chatbot
 
 # chat_history is the array that stores all messages and replies
-# current_bot_name is the name of the current bot
-# current_bot is the current bot, can be asked to respond using respond(msg)
+# chatbots is a dictionary that stores all chatbots
+# current_bot_name is the name of the current bot, can be used as a key for chatbots
+
 chat_history = []
 chatbots = {}
 current_bot_name  = "Eliza"
 
-# ELiza  : RiveScript
-# Source : https://github.com/aichaos/rivescript-js/blob/master/eg/brain/eliza.rive
-def reset_bot_eliza():
-    global bot_eliza, chatbots
-    bot_eliza = Chatbot("Rive", "./Chatbots/Eliza")
-    chatbots["Eliza"] = bot_eliza
+# ELiza     : Rive, https://github.com/aichaos/rivescript-
+# Alice     : AIML, https://github.com/paulovn/python-aiml
+# Standard  : AIML, https://github.com/paulovn/python-aiml
+# Professor : AIML, https://code.google.com/archive/p/professor-chatbot-aiml-code/
 
-# Alice  : AIML
-# Source : https://github.com/paulovn/python-aiml
-def reset_bot_alice():
-    global bot_alice, chatbots
-    bot_alice = Chatbot("AIML", "./Chatbots/Alice")
-    chatbots["Alice"] = bot_alice
+bot_eliza     = Chatbot("Rive", "./Chatbots/Eliza")
+bot_alice     = Chatbot("AIML", "./Chatbots/Alice")
+bot_standard  = Chatbot("AIML", "./Chatbots/Standard")
+bot_professor = Chatbot("AIML", "./Chatbots/Professor")
 
-# Standard  : AIML
-# Source    : https://github.com/paulovn/python-aiml
-def reset_bot_standard():
-    global bot_standard, chatbots
-    bot_standard = Chatbot("AIML", "./Chatbots/Standard")
-    chatbots["Standard"] = bot_standard
+chatbots["Eliza"]     = bot_eliza
+chatbots["Alice"]     = bot_alice
+chatbots["Standard"]  = bot_standard
+chatbots["Professor"] = bot_professor
 
-# Professor : AIML
-# Source    : https://code.google.com/archive/p/professor-chatbot-aiml-code/
-def reset_bot_professor():
-    global bot_professor, chatbots
-    bot_professor = Chatbot("AIML", "./Chatbots/Professor")
-    chatbots["Professor"] = bot_professor
-
-
-# start all bots
-reset_bot_eliza()
-reset_bot_alice()
-reset_bot_standard()
-reset_bot_professor()
-
-# setup google speech-to-text client
-# you might have to set the environment variable GOOGLE_APPLICATION_CREDENTIALS to the path of your google key
-# see here: https://codelabs.developers.google.com/codelabs/cloud-speech-text-python3/
-os.environ['GOOGLE_APPLICATION_CREDENTIALS']= './david_google_key.json'
-client = speech.SpeechClient()
+# setup whisper speech-to-text model
+# see here: https://github.com/openai/whisper
+whisper_model = whisper.load_model("base")
 
 # change the current bot to a different one and clear the chat history
 def set_bot(bot_name):
@@ -95,47 +79,24 @@ def process_audio(audio_path):
 
     # did we actually recieve audio?
     if audio_path != None:
-        print("Audio recording saved at " + audio_path)
+        print("Audio recording saved at: " + audio_path)
 
-        with io.open(audio_path, "rb") as audio_file:
+        # transcribe using whisper
+        transcript_full = whisper_model.transcribe(audio_path)
+        transcript_text = transcript_full['text']
 
-            # read the audio file
-            content = audio_file.read()
+        print("Transcript: " + transcript_text)
 
-            # some preprocessing and configuration
-            audio = speech.RecognitionAudio(content=content)
-            config = speech.RecognitionConfig(
-                encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-                sample_rate_hertz=48000,
-                language_code="en-US",
-            )
+        # get the bots reply for the transcript
+        reply = bot_reply(transcript_text)
 
-            # here is where the actual magic happens
-            # we send the audio to google and get the response
-            response = client.recognize(config=config, audio=audio)
-
-            transcripts = []
-
-            for result in response.results:
-                # The first alternative is the most likely one for this portion.
-                print("Transcript: {}".format(result.alternatives[0].transcript))
-                transcripts.append(result.alternatives[0].transcript)
-
-            # get the bots reply for the transcript
-            reply = bot_reply(transcripts[0])
-            return reply
-        
-    # we didnt recieve audio
-    # return the unedited chat_history
-    return [chat_history, ""]
+    # update the chat history and clear audio input
+    return [chat_history, None]
 
 
 # build UI
-with gr.Blocks(title="Historic Chatbots") as demo:
-
-    # i am trying to insert a SEMS logo, but somehow it doesnt scale down
-    # sems_logo = "https://www.inf.uni-hamburg.de/33133714/sems-logo-7373293ce1c817dfffded3b34bb7ac0078485299.png"
-    # gr.Image(value=sems_logo, shape=(32, None), show_label=False)
+with gr.Blocks(
+    title="Historic Chatbots") as demo:
     
     with gr.Box():
         
@@ -153,31 +114,44 @@ with gr.Blocks(title="Historic Chatbots") as demo:
                 outputs=chat_window
             )
 
-            input_field = gr.Textbox(show_label=False)
+            with gr.Row(
+                variant='compact'):
+                
+                with gr.Column(scale=4):
+                    # input field for text messages
+                    input_field = gr.Textbox(
+                        show_label=False,
+                        placeholder="Type a message here...",
+                    )
 
-            input_audio = gr.Audio(
-                source="microphone",
-                interactive=True,
-                show_label=False,
-                type="filepath",
-                )
-            
+                with gr.Column(scale=1):
+                    # audio input via microphone
+                    input_audio = gr.Audio(
+                        source="microphone",
+                        interactive=True,
+                        show_label=False,
+                        type="filepath",
+                        elem_id="input_audio"
+                    )
+                
+            # process audio
             input_audio.change(
                 fn=process_audio,
                 inputs=input_audio,
-                outputs=[chat_window, input_field]
+                outputs=[chat_window, input_audio]
             )
             
+            # submit button
             button_send = gr.Button(value="Send",variant="primary")
 
-            # submit value via click
+            # submit value via click on button_send
             button_send.click(
                 fn=bot_reply,
                 inputs=input_field,
                 outputs=[chat_window, input_field],
             )
             
-            # submit value via enter
+            # submit value via enter in input_field
             input_field.submit(
                 fn=bot_reply,
                 inputs=input_field,
@@ -186,4 +160,8 @@ with gr.Blocks(title="Historic Chatbots") as demo:
 
 if __name__ == "__main__":
     # launch demo
-    demo.launch(inline=False, inbrowser=True, favicon_path="sems-logo.png")
+    demo.launch(
+        inline=False,
+        inbrowser=True,
+        favicon_path="sems-logo.png" # tab icon in browser
+        )

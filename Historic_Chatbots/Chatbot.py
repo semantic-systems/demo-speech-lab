@@ -27,6 +27,7 @@ class Chatbot:
             self.bot = Chatbot_AIML(filepath)
         else:
             print("Error: Chatbot type", type, "not supported!")
+            print("Supported types are: Rive, AIML")
             return
 
     # make the bot learn additional files
