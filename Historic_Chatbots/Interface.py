@@ -5,7 +5,6 @@ This class contains the main functionality of the historic chatbots project.
 - setting up the bots
 - setting up the gradio UI
 - whisper speech-to-text model
-
 """
 
 import whisper
@@ -96,7 +95,9 @@ def process_audio(audio_path):
 
 # build UI
 with gr.Blocks(
-    title="Historic Chatbots") as demo:
+    title="Historic Chatbots",
+    css="#chatbot {height: 40vh;overflow-y: auto;}"
+    ) as demo:
     
     with gr.Box():
         
@@ -104,8 +105,11 @@ with gr.Blocks(
 
             radio_bot_choice = gr.Radio(choices=["Eliza", "Alice", "Standard", "Professor"], value="Eliza", show_label=False)
             
-            chat_window = gr.Chatbot(show_label=False)
-            chat_window.color_map = (('lime', 'gray'))
+            # we give the chat window some custom css using this row
+            with gr.Row(elem_id = "chatbot"):
+
+                chat_window = gr.Chatbot(show_label=False)
+                chat_window.color_map = (('lime', 'gray'))
 
             # radio buttons to change the current bot
             radio_bot_choice.change(
